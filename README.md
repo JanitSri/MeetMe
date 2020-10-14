@@ -1,4 +1,6 @@
-<span style="color:red">MeetMe</span>
+# MeetMe :coffee: 
 ======
+
+![Image of logo](./icons/logo.png)
 
 ### Meet me halfway!
