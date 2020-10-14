@@ -1,4 +1,4 @@
-<span style="color:#A36220">MeetMe</span>
+<span style="color:red">MeetMe</span>
 ======
 
 ### Meet me halfway!
