@@ -4,6 +4,6 @@ const { getAllLocations, getLocation } = require('../controllers/locations');
 
 router.get('/', getAllLocations);
 
-router.get('/coordinates', getLocation);
+router.get('/common', getLocation);
 
 module.exports = router;
