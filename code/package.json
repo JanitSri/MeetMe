@@ -10,10 +10,12 @@
   "author": "Janit Sriganeshaelankovan",
   "license": "ISC",
   "dependencies": {
+    "build-url": "^6.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "mongoose": "^5.10.9",
+    "node-fetch": "^2.6.1",
     "node-geocoder": "^3.27.0"
   },
   "devDependencies": {
