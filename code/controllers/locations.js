@@ -1,5 +1,5 @@
 const Location = require('../models/location');
-const { getGeocodeData } = require('../utils/helpers');
+const { getCommonPlaceData } = require('../utils/helpers');
 
 exports.getAllLocations = async (req, res, next) => {
   try {
@@ -21,12 +21,13 @@ exports.getAllLocations = async (req, res, next) => {
 // turf.js to find the intersection of polygons
 
 exports.getLocation = async (req, res, next) => {
-  let addresses = req.query.address;
+  let locations = req.body.locations;
+  // console.log(locations);
   try {
-    addressArray = JSON.parse(addresses);
-    if(addresses){
-      let geocodeData = await getGeocodeData(addressArray);
-      res.status(200).json({output:'sucesss', data:geocodeData})
+    // addressArray = JSON.parse(addresses);
+    if(locations.length > 0){
+      let result = await getCommonPlaceData(locations);
+      res.status(200).json({output:'sucesss', data:result})
     }else{
       res.status(200).json({output:"No location passed"})
     } 
