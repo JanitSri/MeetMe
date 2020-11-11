@@ -61,17 +61,14 @@ async function getIsochrones(locationData){
   return result;
 }
 
-
-// TODO: fix this: https://bl.ocks.org/danswick/d3d9b0ef8c557b2a4dd7
 function getOverlappingArea(locationData){
   polyCoords = locationData.map(l => {
-    let coords = l['features'][0]['geometry']['coordinates'];
-    return {
-      type:"Polygon",
-      coordinates:coords
-    };
+    let coords = l['features'][0]['geometry'];
+    return coords;
   })
-  console.log(intersect(polyCoords));
+  let intersections = intersect(...polyCoords);
+  console.log(intersections)
+  locationData.push(intersections);
 }
 
 async function getCommonPlaceData(locationData){
