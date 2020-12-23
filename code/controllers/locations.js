@@ -21,16 +21,14 @@ exports.getAllLocations = async (req, res, next) => {
 // turf.js to find the intersection of polygons
 
 exports.getLocation = async (req, res, next) => {
-  let locations = req.body.locations;
-  // console.log(locations);
+  let locations = req.body.locations || req.body.body.locations;
   try {
-    // addressArray = JSON.parse(addresses);
     if(locations.length > 0){
       let result = await getCommonPlaceData(locations);
-      res.status(200).json({output:'sucesss', data:result})
-    }else{
-      res.status(200).json({output:"No location passed"})
-    } 
+      res.status(200).json({output:'sucesss', data:result});
+      return;
+    }
+    res.status(200).json({output:"failure", data:null})
   } catch (err) {
     console.log(err)
     res.status(500).json({error:"Our server monkeys did something wrong. It will be fixed soon."})

@@ -7,6 +7,10 @@
   height: 150px;
 }
 
+/* .mainContainer{
+  background-color: #98651e;
+} */
+
 .fit {
   display: block;
   position: relative;
@@ -16,16 +20,14 @@
   padding: 350px;
 }
 
-/* .sidebarStyle {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  left: 0;
+.settingsBar {
+  position: relative;
+  float: right;
   margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
+  background-color: #987F5B;
+  color: #000000;
   z-index: 1 !important;
   padding: 6px;
   font-weight: bold;
-} */
+}
 

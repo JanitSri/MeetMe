@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 
 function Input(props) {
   return (
-    <Container className="mt-1 p-4" style={{width:"75%"}}>
+    <Container className="mt-1 p-4">
       { props.invalidEntry && 
         <Alert variant="danger" onClose={props.onClose} dismissible>
           <Alert.Heading>Oh no! Something went wrong!</Alert.Heading>

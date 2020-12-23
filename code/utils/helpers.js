@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 const buildUrl = require('build-url');
 const turf = require('@turf/intersect');
 const { default: intersect } = require("@turf/intersect");
+const { default: convex } = require("@turf/convex");
 const Location = require("../models/location");
 
 async function getRequest(url){
@@ -68,7 +69,7 @@ function getOverlappingArea(locationData){
     return coords;
   })
   let intersections = intersect(...polyCoords);
-  // console.log(intersections)
+  intersections = convex(intersections);
   locationData.push(intersections);
 }
 
@@ -81,13 +82,13 @@ async function getPlacesWithin(overlappingArea){
 
   try {
     let filteredPoly = [];
-    for(let p of polyArr['coordinates']){1
-      let tempSet = new Set(p[0]);
+    for(let p of polyArr['coordinates']){
+      let tempSet = new Set(p);
       let arr = Array.from(tempSet);
-      arr.push(arr[0])
-      filteredPoly.push([arr]);
+      arr.push(arr[0]);
+      filteredPoly.push(arr);
     }
-  
+
     let places = await Location.find({
       location:
       {
@@ -115,7 +116,9 @@ async function getCommonPlaceData(locationData){
     });
     locationData = await getIsochrones(locationData);
     getOverlappingArea(locationData);
-    return getPlacesWithin(locationData);
+    let places = await getPlacesWithin(locationData);
+    locationData.push(places);
+    return locationData;
   }
 }
 
