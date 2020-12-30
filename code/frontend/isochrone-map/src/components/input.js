@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 function Input(props) {
 
   const numberOfPeople = ['first', 'second'];
+  const defaultAddress = ['300 City Centre Dr', '100 City Centre Dr'];
 
   return (
     <Container className="mt-1 p-4">
@@ -14,6 +15,11 @@ function Input(props) {
         </Alert>
       }
       <Form noValidate onSubmit={props.onSubmit}>
+        <Form.Text id="helpText" className="mb-4">
+          <p style={{fontWeight:"bold"}}>
+            To get started, enter location, mode of transportation and travel time (minutes of travel). The map will show potential areas to meet up based on common area. Currently, Mississauga (Ontario) is only supported. More cities will be added in the future. 
+          </p>
+        </Form.Text>
         {
           numberOfPeople.map((people, index) => {
             return (
@@ -22,7 +28,7 @@ function Input(props) {
                 <Form.Row className="mb-3">
                   <Form.Group as={Col} controlId={`${people}Street`}>
                     <Form.Label>Street</Form.Label>
-                    <Form.Control type="text" placeholder="300 City Centre Dr"/>
+                    <Form.Control type="text" placeholder={defaultAddress[index]}/>
                   </Form.Group>
 
                   <Form.Group as={Col} controlId={`${people}City`}>
@@ -62,12 +68,6 @@ function Input(props) {
             );
           })
         }
-        <Form.Text id="helpText" className="mb-4">
-          <p style={{fontWeight:"bold"}}>
-            To get started, enter two locations and the map will show potential areas to meet up based on common area. Conditions for meet up can be altered using the toolbar in the map. Currently, Mississauga (Ontario) is only supported. More cities will be added in the future. 
-          </p>
-        </Form.Text>
-        
         <Row>
           <Col className="text-center">
             <Button variant="outline-dark" type="submit">

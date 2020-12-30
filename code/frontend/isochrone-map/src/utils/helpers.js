@@ -1,5 +1,6 @@
 import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
+import customMarkerImage from '../assets/customMarkerImage.png'
 
 export const retrieveLocs = async (queryBody) => {
   try {
@@ -29,22 +30,29 @@ export const createMarker = (markerColor, lng, lat, popup, map) => {
   return new mapboxgl.Marker({color: markerColor})
   .setLngLat([lng,lat])
   .setPopup(popup)
-  .addTo(map);;
+  .addTo(map);
 }
 
 export const addPlaceMarkers = (placesArray, map) => {
   console.log("Places Array ", placesArray);
+
+  let placesMarker = [];
+
   placesArray.forEach(place => {
     let text = `<p>Place Name: ${place.name}</p><p>NAICS Code: ${place.naics_code}</p><p>Address: ${place.address.street}, ${place.address.postal_code}</p><p>Website: <a href='https://${place.web_address}' target="_blank">${place.web_address}</a></p>`;
-    let popup = createPopup(text)
+    let popup = createPopup(text);
     
-    let marker = createMarker("#008000", place.location.coordinates[0], place.location.coordinates[1], popup, map)    
+    let marker = createMarker("#00FF00", place.location.coordinates[0], place.location.coordinates[1], popup, map);
+
+    placesMarker.push(marker);
   });
+
+  console.log("Places Marker", placesMarker)
   
-  return placesArray;
+  return placesMarker;
 }
 
-export const handleMapStyleChange = (e, map, mapData) => {
+export const handleMapStyleChange = (e, map) => {
   const BASE_STYLE_URL = "mapbox://styles/mapbox/";
   map.setStyle(BASE_STYLE_URL + e.target.value);
 }
@@ -66,8 +74,8 @@ export const addIsochroneContour = (map) => {
     'source': 'firstLoc',
     'layout': {},
     'paint': {
-      'fill-color': '#FF0000',
-      'fill-opacity': 0.3
+      'fill-color': '#003FFF',
+      'fill-opacity': 0.5
     }
   });
 
@@ -86,7 +94,7 @@ export const addIsochroneContour = (map) => {
     'layout': {},
     'paint': {
       'fill-color': '#FFFF00',
-      'fill-opacity': 0.3
+      'fill-opacity': 0.5
     }
   });
 }

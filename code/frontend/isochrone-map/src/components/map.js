@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react'
-import { Container, Form, Row } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react'
+import { Container, Form, Row, Button, ButtonGroup} from 'react-bootstrap';
 import mapboxgl from 'mapbox-gl';
-import { createPopup, createMarker, addPlaceMarkers, handleMapStyleChange, addIsochroneContour, createPopupText } from '../utils/helpers';
+import { createPopup, createMarker, addPlaceMarkers, handleMapStyleChange, addIsochroneContour, createPopupText, hidePlaceMarkers } from '../utils/helpers';
 import { locOneDefault, locOneTextDefault, locTwoDefault, locTwoTextDefault } from '../utils/default';
 
 function Map(props) {
@@ -9,6 +9,11 @@ function Map(props) {
   let globalMap = useRef(null);
   let globalData = useRef(props.data);
   let currentMarkers = useRef([]);
+  let commonPlacesMarkers = useRef([]);
+
+  let [showCommonPlaces, setShowCommonPlaces] = useState(true);
+  let [showLocOne, setShowLocOne] = useState(true);
+  let [showLocTwo, setShowLocTwo] = useState(true);
   
   useEffect(() => {
     const mapParams = {lng: -79.640579, lat: 43.595310, zoom: 11};
@@ -21,6 +26,8 @@ function Map(props) {
       center: [mapParams.lng, mapParams.lat],
       zoom: mapParams.zoom
     });
+
+    map.addControl(new mapboxgl.NavigationControl());
 
     map.on('style.load', function() {
       addIsochroneContour(map);
@@ -54,7 +61,8 @@ function Map(props) {
       globalMap.current.flyTo({ center: [-79.6441, 43.5890], zoom: 10 });
 
       if(mapData[3] != null){
-        let places = addPlaceMarkers(mapData[3].slice(1), globalMap.current);
+        let commonPlaces = addPlaceMarkers(mapData[3].slice(1), globalMap.current);
+        commonPlacesMarkers.current = commonPlaces;
       }
       
       globalMap.current.getSource('firstLoc').setData(mapData[0].features[0].geometry);
@@ -62,7 +70,7 @@ function Map(props) {
     }
 
     let popup1 = createPopup(locOneText)
-    let marker1 = createMarker("#FF0000", locOne.lng, locOne.lat, popup1, globalMap.current)
+    let marker1 = createMarker("#003FFF", locOne.lng, locOne.lat, popup1, globalMap.current)
 
     let popup2 = createPopup(locTwoText)
     let marker2 = createMarker("#FFFF00", locTwo.lng, locTwo.lat, popup2, globalMap.current)
@@ -75,6 +83,41 @@ function Map(props) {
       currentMarkers.current = [];
     }
   }, [props.data]);
+
+  const locOneVisibilityHandler = () => {
+    console.log("Location One Visible");
+    setShowLocOne(prevState => !prevState);
+    if(showLocOne){
+      currentMarkers.current[0].remove();
+      globalMap.current.setLayoutProperty('firstIsoLayer', 'visibility', 'none');
+    }else{
+      currentMarkers.current[0].addTo(globalMap.current);
+      globalMap.current.setLayoutProperty('firstIsoLayer', 'visibility', 'visible');
+    }
+  }
+
+  const locTwoVisibilityHandler = () => {
+    console.log("Location Two Visible");
+    if(showLocTwo){
+      currentMarkers.current[1].remove();
+      globalMap.current.setLayoutProperty('secondIsoLayer', 'visibility', 'none');
+    }else{
+      currentMarkers.current[1].addTo(globalMap.current);
+      globalMap.current.setLayoutProperty('secondIsoLayer', 'visibility', 'visible');
+    }
+
+    setShowLocTwo(prevState => !prevState);
+  }
+
+  const commonPlacesVisibilityHandler = () => {
+    console.log("Common Places Visible");
+    if(showCommonPlaces && commonPlacesMarkers.current){
+      commonPlacesMarkers.current.forEach(marker => marker.remove());
+    }else if(!showCommonPlaces && commonPlacesMarkers.current){
+      commonPlacesMarkers.current.forEach(marker => marker.addTo(globalMap.current));
+    }
+    setShowCommonPlaces(prevState => !prevState);
+  }
 
   return (
     <Container className="mt-1 p-4">
@@ -92,7 +135,15 @@ function Map(props) {
             </Form.Group>
           </div>
         </div>
-        <div ref={el => (mapContainer.current = el)} className="fit"/>
+        <div ref={el => (mapContainer.current = el)} className="fit">
+          {props.buttonGroup && <div className="toggleBar">
+            <ButtonGroup vertical>
+              <Button variant={showLocOne ? "primary" : "outline-primary"} className="mb-2" onClick={locOneVisibilityHandler}>{showLocOne ? <span>Hide Location One</span> : <span>Show Location One</span>}</Button>
+              <Button variant={showLocTwo ? "warning" : "outline-warning"} className="mb-2" onClick={locTwoVisibilityHandler}>{showLocTwo ? <span>Hide Location Two</span> : <span>Show Location Two</span>}</Button>
+              <Button variant={showCommonPlaces ? "success" : "outline-success"} className="mb-2" onClick={commonPlacesVisibilityHandler}>{showCommonPlaces ? <span>Hide Common Places</span> : <span>Show Common Places</span>}</Button>
+            </ButtonGroup>
+          </div>}
+        </div>
       </div>
     </Container>
   )
