@@ -78,14 +78,15 @@ function Map(props) {
     currentMarkers.current.push(marker1, marker2);
 
     return () => {
-      console.log("useEffect clean up is called.");
       currentMarkers.current.forEach((marker) => marker.remove());
       currentMarkers.current = [];
+
+      commonPlacesMarkers.current.forEach((marker) => marker.remove());
+      commonPlacesMarkers.current = [];
     }
   }, [props.data]);
 
   const locOneVisibilityHandler = () => {
-    console.log("Location One Visible");
     setShowLocOne(prevState => !prevState);
     if(showLocOne){
       currentMarkers.current[0].remove();
@@ -97,7 +98,6 @@ function Map(props) {
   }
 
   const locTwoVisibilityHandler = () => {
-    console.log("Location Two Visible");
     if(showLocTwo){
       currentMarkers.current[1].remove();
       globalMap.current.setLayoutProperty('secondIsoLayer', 'visibility', 'none');
@@ -110,7 +110,6 @@ function Map(props) {
   }
 
   const commonPlacesVisibilityHandler = () => {
-    console.log("Common Places Visible");
     if(showCommonPlaces && commonPlacesMarkers.current){
       commonPlacesMarkers.current.forEach(marker => marker.remove());
     }else if(!showCommonPlaces && commonPlacesMarkers.current){

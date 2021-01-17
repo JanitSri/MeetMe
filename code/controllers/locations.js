@@ -16,10 +16,6 @@ exports.getAllLocations = async (req, res, next) => {
   }
 };
 
-// geowithin to get locations in a polygon from DB
-// in MongoDB [longitude, latitude]
-// turf.js to find the intersection of polygons
-
 exports.getLocation = async (req, res, next) => {
   let locations = req.body.locations || req.body.body.locations;
   try {

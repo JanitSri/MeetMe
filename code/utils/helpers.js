@@ -5,6 +5,7 @@ const { default: intersect } = require("@turf/intersect");
 const { default: convex } = require("@turf/convex");
 const Location = require("../models/location");
 
+// request template 
 async function getRequest(url){
   try {
     console.log("<<< SENDING REQUEST TO..." + url + " >>>\n");
@@ -16,6 +17,7 @@ async function getRequest(url){
   }
 }
 
+// build the url 
 function getUrl(baseUrl, urlParams){
   return buildUrl(baseUrl, {
     disableCSV: true,
@@ -23,6 +25,7 @@ function getUrl(baseUrl, urlParams){
   }); 
 }
 
+// get the geodata of the locations 
 async function getGeocodeData(locations){
   let addresses = locations.map(loc => loc["address"])
   let url = getUrl('http://www.mapquestapi.com/geocoding/v1/batch', {
@@ -43,6 +46,7 @@ async function getGeocodeData(locations){
   }
 }
 
+// get the isochrone contours of the geodatas
 async function getIsochrones(locationData){
   let urls = locationData.map(l => 
     getUrl(`https://api.mapbox.com/isochrone/v1/mapbox/${l['profile']}/${l['lng']},${l['lat']}`, {
@@ -63,6 +67,7 @@ async function getIsochrones(locationData){
   return result;
 }
 
+// get overlapping area of the isochrone contour 
 function getOverlappingArea(locationData){
   polyCoords = locationData.map(l => {
     let coords = l['features'][0]['geometry'];
@@ -73,6 +78,7 @@ function getOverlappingArea(locationData){
   locationData.push(intersections);
 }
 
+// the the common places in the area 
 async function getPlacesWithin(overlappingArea){
   const polyArr = overlappingArea.length === 3 && overlappingArea[2] != null ? overlappingArea[2]['geometry'] : null;
 

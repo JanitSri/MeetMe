@@ -1,7 +1,7 @@
 import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
-import customMarkerImage from '../assets/customMarkerImage.png'
 
+// get the data from the backend 
 export const retrieveLocs = async (queryBody) => {
   try {
     let result = await axios.post("http://localhost:8081/api/v1/locations/common", {
@@ -33,8 +33,8 @@ export const createMarker = (markerColor, lng, lat, popup, map) => {
   .addTo(map);
 }
 
+// create the common place markers 
 export const addPlaceMarkers = (placesArray, map) => {
-  console.log("Places Array ", placesArray);
 
   let placesMarker = [];
 
@@ -46,8 +46,6 @@ export const addPlaceMarkers = (placesArray, map) => {
 
     placesMarker.push(marker);
   });
-
-  console.log("Places Marker", placesMarker)
   
   return placesMarker;
 }
@@ -58,7 +56,6 @@ export const handleMapStyleChange = (e, map) => {
 }
 
 export const addIsochroneContour = (map) => {
-  console.log("Isochrone Contour")
   
   map.addSource('firstLoc', {
     type: 'geojson',
