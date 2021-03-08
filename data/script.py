@@ -1,10 +1,3 @@
-"""
-NAME: Janit Sriganeshaelankovan 
-CREATED: Thu Oct 29 12:31:04 2020
-GOAL: Format the location data and get logitude and latitude.
-LAST UPDATE: Thu Oct 29 12:31:04 2020
-"""
-
 import pandas as pd
 import requests
 import json
@@ -31,14 +24,11 @@ for idx, row in loc_data.iterrows():
     loc_results = data['results'][0]['locations'][0]['latLng']
     loc_data.at[idx, 'Longitude'], loc_data.at[idx, 'Latitude'] = loc_results['lng'], loc_results['lat']
     
-    
 loc_data.to_csv('locations_formatted.csv', index=False)
-
 
 
 # Output to format to load into MongoDB
 output = [] 
-
 for idx, row in loc_data.iterrows():
     output.append({
         "name": str(row['Name']),
@@ -59,24 +49,4 @@ for idx, row in loc_data.iterrows():
 
 with open('location_data.txt', 'w', encoding='utf-8') as f:
     json.dump(output, f, indent=4)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
