@@ -1,0 +1,37 @@
+.bodyFormat{
+  background-color:#987F5B;
+}
+
+.headerImage{
+  width: 17%;
+  height: 150px;
+}
+
+.fit {
+  display: block;
+  position: relative;
+  margin: 0px auto;
+  width: 100%;
+  height: 100%;
+  padding: 350px;
+}
+
+.settingsBar {
+  position: relative;
+  float: right;
+  margin: 12px;
+  background-color: #987F5B;
+  color: #000000;
+  z-index: 1 !important;
+  padding: 6px;
+  font-weight: bold;
+}
+
+.toggleBar {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  margin: 15px;
+  z-index: 99;
+}
+

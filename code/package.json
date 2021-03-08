@@ -1,0 +1,28 @@
+{
+  "name": "express_template",
+  "version": "1.0.0",
+  "description": "MeetMe Application",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Janit Sriganeshaelankovan",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/clean-coords": "^6.0.1",
+    "@turf/convex": "^5.0.4",
+    "@turf/intersect": "^6.1.3",
+    "build-url": "^6.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "mongoose": "^5.10.9",
+    "node-fetch": "^2.6.1",
+    "node-geocoder": "^3.27.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
